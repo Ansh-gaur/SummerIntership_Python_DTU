@@ -4,15 +4,8 @@ from openpyxl import load_workbook
 
 
 #INPUT OF LIST OF DICTIONARY
-L=[]
-n=int(input("enter the number of records"))
-for i in range(n):
-    d={}
-    a=input("enter the id")
-    b=input("enter the Quantity")
-    d["ID"]=a
-    d["Quantity"]=b
-    L.append(d) 
+outputFinal=[{'ID':'2.0','Quantity':0},{'ID':'2.1','Quantity':0},{'ID':'2.1.1','Quantity':0},{'ID':'2.1.2','Quantity':0},{'ID':'2.1.3','Quantity':94.10902061862528}]
+ 
 
 
 def Find_QTY(ide,L):
@@ -21,16 +14,15 @@ def Find_QTY(ide,L):
             return i["Quantity"]
 
     
-path="C:\\Users\\hp\\Desktop\\PythonDTU\\day1.xlsx"
+path="C:\\Users\\hp\\Desktop\\PythonDTU\\day1.xlsx"     #You can write the path of your file
 A=load_workbook(path)
 B=A['Sheet1']
-t=p.read_excel(path,sheet_name='Sheet1',usecols=("ID","Quantity"))
+t=p.read_excel(path,sheet_name='Sheet1',usecols=("Quantity","ID"))
 size=len(t)
-for i in range(2,size+2):
-    y='B'+str(i)
-    rr='A'+str(i)
-    B[y]=Find_QTY(B[rr].value,L)
-    print(B[rr])
+for i in range(3,size+3):
+    y='A'+str(i)
+    rr='B'+str(i)
+    B[y]=Find_QTY(B[rr].value,outputFinal)
 A.save(path)
 
 
