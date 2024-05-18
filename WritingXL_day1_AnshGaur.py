@@ -4,7 +4,7 @@ from openpyxl import load_workbook
 
 
 #INPUT OF LIST OF DICTIONARY
-outputFinal=[{'ID':'2.0','Quantity':10},{'ID':'2.1','Quantity':0},{'ID':'2.1.1','Quantity':0},{'ID':'2.1.2','Quantity':0},{'ID':'2.1.3','Quantity':94.10902061862528}]
+outputFinal=[{'ID':'2.0','Quantity':1},{'ID':'2.1','Quantity':2},{'ID':'2.1.1','Quantity':3},{'ID':'2.1.2','Quantity':4},{'ID':'2.1.3','Quantity':5}]
  
 
 
@@ -23,6 +23,7 @@ size=len(t)
 for i in range(3,132):
     y='A'+str(i)
     rr='B'+str(i)
+    print(B[rr].value)
     if(i==3):
         ttt=Find_QTY('2.0',outputFinal)
         if(ttt!=None):
@@ -30,7 +31,7 @@ for i in range(3,132):
         else:
             B[y]=B[y].value
     else:
-        ttt=Find_QTY(B[rr].value,outputFinal)
+        ttt=Find_QTY(str(B[rr].value),outputFinal)
         if(ttt!=None):
             B[y]=ttt
         else:
