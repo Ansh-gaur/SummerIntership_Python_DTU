@@ -23,7 +23,6 @@ size=len(t)
 for i in range(3,132):
     y='A'+str(i)
     rr='B'+str(i)
-    print(B[rr].value)
     if(i==3):
         ttt=Find_QTY('2.0',outputFinal)
         if(ttt!=None):
