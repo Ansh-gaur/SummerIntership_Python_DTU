@@ -8,11 +8,13 @@ workbook = openpyxl.load_workbook(file)
 sheet = workbook['Sheet 1']
 
 for dictionary in mylist:
-    for i in range(1,130):
-        if str(data['Unnamed: 1'][i]) == str(dictionary['ID']):
-            sheet.cell(row = i+2, column=1).value = dictionary['Quantity']
+    for i in range(1,140):
+        try:
+            if str(data['Unnamed: 1'][i]) == str(dictionary['ID']):
+                sheet.cell(row = i+2, column=1).value = dictionary['Quantity']
+                break
+        except Exception as e:
             break
-
 workbook.save(file)
 
 
