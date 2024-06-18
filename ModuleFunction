@@ -4,8 +4,8 @@ from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl import load_workbook
 import csv
 
-""" In this function you have to give first parameter as path of the input file and
-    second parameter as path of the output file(full path with name of the input and
+""" In this function you have to give first parameter as path of the input file(xlsx file) and
+    second parameter as path of the output file(csv file) (full path with name of the input and
     and output files"""
 def AREA(path,outputpath):
     f=p.read_excel(path,sheet_name='AREA')
