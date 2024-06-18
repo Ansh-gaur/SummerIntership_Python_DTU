@@ -42,10 +42,10 @@ def AREA(path,outputpath):
     writer.writerows(t)
     file.close()
 
-# For function output_generator function first var is the path of the file and second variable is the name of the sheet in which data is present
+# For function BOQ first var is the path of the file and second variable is the name of the sheet in which data is present
 #Example: file = 'C:\\Users\\LENOVO\\Desktop\\Internship\\BOQ  - Tower A (1).xls'
 # sheet_name = '(2)Est.-civil'
-def output_generator(file, sheet_name):
+def BOQ(file, sheet_name):
     data = p.read_excel(file, sheet_name=sheet_name)
     
     try:
