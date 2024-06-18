@@ -3,7 +3,7 @@ import numpy as n
 from openpyxl.utils.dataframe import dataframe_to_rows
 import openpyxl
 from openpyxl import load_workbook
-import csv
+import csv, os
 
 """ In this function you have to give first parameter as path of the input file(xlsx file) and
     second parameter as path of the output file(csv file) (full path with name of the input and
@@ -132,3 +132,42 @@ def BOQ(file, sheet_name):
 
     workbook.save("output_file.csv")
 
+# inputfile is the file in which rows to be replaced are mentioned
+# datafile is the raw output file which is being processed further
+# sheet_name_datafile is the sheet name of the datafile
+# sheet_name_inputfile is the name of sheet in the input file
+# outputfile is used to give unique output names to all files
+# Function post_output_processing deletes redundant entries entered by user in inputfile and replaces them by row entered by user in the same file
+# Description of deleted rows is added to the row by which they are replaced and quantity of replacing row is replaced by that of deleted rows if they are non zero
+def post_output_processing(inputfile, datafile, sheet_name_datafile, sheet_name_inputfile, outputfile):
+    data = pd.read_excel(datafile, sheet_name=sheet_name_datafile)
+    data.fillna('Empty')
+    data2 = pd.read_excel(inputfile, sheet_name = sheet_name_inputfile)
+    for element, element2 in zip(data2['toremovecolumns'],data2['neededcolumn']):
+        element = element.replace(' ','')
+        listofelements = element.split(',')
+        longstring = ''
+        solo_quantity = 0
+        for uniqueid, quantity, Sno, description in zip(data['ID'], data['Quantity'], data['SNo'], data['Description']):
+            if str(uniqueid) == 'nan':
+                data = data.drop(int(int(Sno)-1))
+                continue
+            if uniqueid in listofelements:
+                if quantity != 'Empty':
+                    solo_quantity = quantity
+                longstring = longstring+description
+                data = data.drop(int(int(Sno)-1))
+                listofelements.remove(uniqueid) 
+        if len(listofelements) == 0:
+            for uniqueid, quantity, Sno, description in zip(data['ID'], data['Quantity'], data['SNo'], data['Description']):
+                if uniqueid == element2:
+                    data.loc[int(int(Sno)-1),'Description'] = data['Description'][int(int(Sno)-1)]+longstring
+                    data.loc[int(int(Sno)-1),'Quantity'] = solo_quantity
+
+datafile = 'outputfile.csv'
+inputfile = 'inputfile.xlsx'
+sheet_name_datafile = 'Sheet'
+sheet_name_inputfile = 'Sheet1'
+pathtofolder = 'C://Users/LENOVO/Desktop/outputfolder'
+for outputfile in os.listdir(pathtofolder):
+    post_output_processing(inputfile,str('C://Users/LENOVO/Desktop/outputfolder/'+outputfile), sheet_name_datafile, sheet_name_inputfile, outputfile)
