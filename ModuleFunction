@@ -1,6 +1,7 @@
 import pandas as p
 import numpy as n
 from openpyxl.utils.dataframe import dataframe_to_rows
+import openpyxl
 from openpyxl import load_workbook
 import csv
 
@@ -40,3 +41,94 @@ def AREA(path,outputpath):
     writer=csv.writer(file)
     writer.writerows(t)
     file.close()
+
+# For function output_generator function first var is the path of the file and second variable is the name of the sheet in which data is present
+#Example: file = 'C:\\Users\\LENOVO\\Desktop\\Internship\\BOQ  - Tower A (1).xls'
+# sheet_name = '(2)Est.-civil'
+def output_generator(file, sheet_name):
+    data = p.read_excel(file, sheet_name=sheet_name)
+    
+    try:
+        data = data.drop('F-type', axis=1)
+    except Exception:
+        pass
+    for element in data:
+        print(element)
+
+    i = 1
+    for element in data:
+        if i == 1:
+            data = data.rename(columns={element:'S. No.'})
+        elif i == 2:
+            data = data.rename(columns={element:'Description'})
+        elif i == 4:
+            data = data.rename(columns={element:'F-type'})
+        i+=1
+
+    
+    data = data.fillna('Empty')
+
+    for element in data:
+        print(element)
+    workbook = openpyxl.Workbook()
+    worksheet = workbook.active
+    length = len(data['S. No.'])
+    i = 1
+    worksheet.cell(row=1, column=1).value = "SNo"
+    worksheet.cell(row=1, column=2).value = "Description"
+    worksheet.cell(row=1, column=3).value = "Quantity"
+    worksheet.cell(row=1, column=4).value = "ID"
+
+    longlist = []
+    for element,quantity,description in zip(data['S. No.'],data['F-type'],data['Description']):
+        if element != "Empty":
+            print(element)
+            i = i + 1
+            worksheet.cell(row = i, column=1).value = i-1
+            if quantity != "Empty":
+                worksheet.cell(row=i, column=3).value = quantity
+            digits = str(element).split('.')
+            for digit in digits:
+                if digit.isdigit():
+                    Flag=True
+                else:
+                    Flag = False
+                    break
+       
+            if Flag == True:
+                worksheet.cell(row = i, column=4).value = element
+                longlist.append(element)
+            elif Flag == False:
+                if '*' in element:
+                
+                    count = 0
+                    for listelement in reversed(longlist):
+                        if '*' in listelement:
+                            count += 1
+                        else:
+                            previous = listelement
+                            break
+                    longlist.append('*')
+                    alphanumerical = {0:'(a)' , 1:'(b)' , 2:'(c)', 3:'(d)' , 4:'(e)' , 5:'(f)' , 6:'(g)', 7:'(h)' , 8:'(i)', 9:'(j)' , 10:'(k)'}
+                    value = str(previous)+alphanumerical[count]
+                    worksheet.cell(row=i, column=4).value = value
+                else:
+                    try:
+                        value = str(longlist[-1]) + str(element)
+                    except IndexError:
+                        continue
+    
+                    worksheet.cell(row=i, column=4).value = value            
+        
+        
+            worksheet.cell(row = i, column=2).value = description
+        
+    
+        
+        
+
+
+
+
+    workbook.save("output_file.csv")
+
