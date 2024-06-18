@@ -1,0 +1,40 @@
+import pandas as p
+import numpy as n
+from openpyxl.utils.dataframe import dataframe_to_rows
+from openpyxl import load_workbook
+import csv
+r=input()
+path="C:/Users/hp/Desktop/PythonDTU/input"+r+".xlsx"
+path=path.replace("/","//")
+f=p.read_excel(path,sheet_name='AREA')
+f=f.fillna("empty")
+g=list(f.iloc[:,0])
+h=list(f.iloc[:,1])
+
+if('Sr. No. ' in g):
+    ind=g.index(1)
+    s2=list(f.iloc[:,1])
+    s3=list(f.iloc[:,5])
+    s2[:ind]=[]
+    s3[:ind]=[]
+elif('Sr. No. ' in h):
+    ind=h.index(1)
+    s2=list(f.iloc[:,2])
+    s3=list(f.iloc[:,6])
+    s2[:ind]=[]
+    s3[:ind]=[]
+t=[]
+c=0
+L=['Sno','Desc','Area']
+t.append(L)
+for i in range(len(s2)):
+    if(s3[i] not in ['empty',' ']):
+        t.append([c,s2[i],s3[i]])
+        c+=1
+
+ 
+pathcsv="C://Users//hp//Desktop//PythonDTU//output"+r+".csv"
+file=open(pathcsv,'w',newline='')
+writer=csv.writer(file)
+writer.writerows(t)
+file.close()
