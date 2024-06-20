@@ -163,6 +163,11 @@ def post_output_processing(inputfile, datafile, sheet_name_datafile, sheet_name_
                 if uniqueid == element2:
                     data.loc[int(int(Sno)-1),'Description'] = data['Description'][int(int(Sno)-1)]+longstring
                     data.loc[int(int(Sno)-1),'Quantity'] = solo_quantity
+def run(areafiles, boqfiles):
+    for filepath in boqfiles:
+        
+        
+    
 
 datafile = 'outputfile.csv'
 inputfile = 'inputfile.xlsx'
