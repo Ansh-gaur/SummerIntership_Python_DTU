@@ -129,8 +129,8 @@ def BOQ(file, sheet_name):
 
 
 
-
-    workbook.save("output_file.csv")
+    y = file+'.csv'
+    workbook.save(y)
 
 # inputfile is the file in which rows to be replaced are mentioned
 # datafile is the raw output file which is being processed further
@@ -165,6 +165,18 @@ def post_output_processing(inputfile, datafile, sheet_name_datafile, sheet_name_
                     data.loc[int(int(Sno)-1),'Quantity'] = solo_quantity
 def run(areafiles, boqfiles):
     for filepath in boqfiles:
+        sheetname = input("Enter sheetname: ")
+        BOQ(filepath, sheetname)
+    for filepath in areafiles:
+        area(filepath,str('Output'+filepath+'.csv'))
+
+
+
+        
+
+        
+        
+        
         
         
     
