@@ -52,8 +52,6 @@ def BOQ(file, sheet_name):
         data = data.drop('F-type', axis=1)
     except Exception:
         pass
-    for element in data:
-        print(element)
 
     i = 1
     for element in data:
@@ -67,9 +65,6 @@ def BOQ(file, sheet_name):
 
     
     data = data.fillna('Empty')
-
-    for element in data:
-        print(element)
     workbook = openpyxl.Workbook()
     worksheet = workbook.active
     length = len(data['S. No.'])
@@ -82,7 +77,6 @@ def BOQ(file, sheet_name):
     longlist = []
     for element,quantity,description in zip(data['S. No.'],data['F-type'],data['Description']):
         if element != "Empty":
-            print(element)
             i = i + 1
             worksheet.cell(row = i, column=1).value = i-1
             if quantity != "Empty":
@@ -128,9 +122,9 @@ def BOQ(file, sheet_name):
         
 
 
-
-    y = file+'.csv'
-    workbook.save(y)
+    file = file.replace('.xls','output.csv')
+    file = file.replace('boqfiles','outputboq')
+    workbook.save(file)
 
 # inputfile is the file in which rows to be replaced are mentioned
 # datafile is the raw output file which is being processed further
@@ -163,15 +157,41 @@ def post_output_processing(inputfile, datafile, sheet_name_datafile, sheet_name_
                 if uniqueid == element2:
                     data.loc[int(int(Sno)-1),'Description'] = data['Description'][int(int(Sno)-1)]+longstring
                     data.loc[int(int(Sno)-1),'Quantity'] = solo_quantity
+
 def run(areafiles, boqfiles):
     for filepath in boqfiles:
-        sheetname = input("Enter sheetname: ")
+        sheetname = input("Enter sheetname for {}: ".format(filepath))
         BOQ(filepath, sheetname)
     for filepath in areafiles:
-        area(filepath,str('Output'+filepath+'.csv'))
+        outputpath = filepath.replace('.xlsx','output.csv')
+        outputpath = outputpath.replace('areafiles','outputarea')
+        AREA(filepath,outputpath)
+towerAarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER   A AREA CALCULATION.  01.04.2024.xlsx'
+towerCarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER   C AREA CALCULATION. 23.03.2024.xlsx'
+towerEarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER   E AREA CALCULATION.  02 .04.2024.xlsx'
+towerFarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER   F AREA CALCULATION.  05.04.2024.xlsx'
+towerHarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER   H AREA CALCULATION.  05.04.2024.xlsx'
+towerBarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER B AREA CALCULATION. 23.03.2024.xlsx'
+towerDarea = 'C://Users/LENOVO/Desktop/areafiles/TOWER D AREA CALCULATION. 23.03.2024.xlsx'
+
+areafiles = [towerAarea, towerBarea, towerCarea, towerDarea, towerEarea, towerFarea, towerHarea]
+
+towerAboq = 'C://Users/LENOVO/Desktop/boqfiles/BOQ  - Tower A (1).xls'
+towerBboq = 'C://Users/LENOVO/Desktop/boqfiles/CIVIL TENDER BOQ TOWER-B.xls'
+towerCboq = 'C://Users/LENOVO/Desktop/boqfiles/CIVIL TENDER BOQ TOWER-C.xls'
+towerDboq = 'C://Users/LENOVO/Desktop/boqfiles/CIVIL TENDER BOQ TOWER-D.xls'
+towerEboq = 'C://Users/LENOVO/Desktop/boqfiles/JAYPEE GREEN KASA ISLES- Tower E.xls'
+towerFboq = 'C://Users/LENOVO/Desktop/boqfiles/BOQ  Tower F.xls'
+towerHboq = 'C://Users/LENOVO/Desktop/boqfiles/BOQ  Tower H.xls'
+
+boqfiles = [towerAboq, towerBboq, towerCboq, towerDboq, towerEboq, towerFboq, towerHboq]
 
 
 
+
+
+run(areafiles, boqfiles)
+
         
 
         
@@ -179,7 +199,7 @@ def run(areafiles, boqfiles):
         
         
         
-    
+'''    
 
 datafile = 'outputfile.csv'
 inputfile = 'inputfile.xlsx'
@@ -187,4 +207,4 @@ sheet_name_datafile = 'Sheet'
 sheet_name_inputfile = 'Sheet1'
 pathtofolder = 'C://Users/LENOVO/Desktop/outputfolder'
 for outputfile in os.listdir(pathtofolder):
-    post_output_processing(inputfile,str('C://Users/LENOVO/Desktop/outputfolder/'+outputfile), sheet_name_datafile, sheet_name_inputfile, outputfile)
+    post_output_processing(inputfile,str('C://Users/LENOVO/Desktop/outputfolder/'+outputfile), sheet_name_datafile, sheet_name_inputfile, outputfile)'''
